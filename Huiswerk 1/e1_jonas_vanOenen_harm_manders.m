@@ -16,6 +16,38 @@ function e1_jonas_vanOenen_harm_manders()
     a = imread('cameraman.tif');
     rotateImage(a, 30, 'linear')
     
+    
+    %% Question 4.1
+    plotParallelogram(0,0,0,0,1,1)
+    
+    
+% plot a parallelogram overlayed on the current axis
+% coordinates given are image coordinates
+function plotParallelogram ( x1 , y1 , x2 , y2 , x3 , y3 )
+    hold on ;
+    plot ([ x1 , x2 , x3 , x3 - x2 + x1 , x1 ] , [ y1 , y2 , y3 , y1 - y2 + y3 , y1 ] ,'y' , 'LineWidth' , 2);
+    text ( x1 , y1 , '1' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
+    text ( x2 , y2 , '2' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
+    text ( x3 , y3 , '3' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
+end
+
+function r = myAffine ( image , x1 , y1 , x2 , y2 , x3 , y3 , M , N , method )
+    r = zeros (N , M ); % allocate new image of correct size
+    
+    % calculate X ( insert code for this )
+    A = [ x1 , x2 , x3 ; y1 , y2 , y3 ; 1 , 1 , 1];
+    B = [ xx1 , xx2 , xx3 ; yy1 , yy2 , yy3 ];
+    X = B / A ;
+
+    for xa = 1: M
+        for ya = 1: N
+            
+        newVec = X * [xa; ya; 1]; % Position vector times rotation
+        x = newVec(0); % new X coordinate
+        y = newVec(1); % new Y coordinate
+        r ( ya , xa ) = pixelValue ( image , x , y , method ); % Get pixelvalue for new position
+        end
+    end
 end
 
 function rotatedImage = rotateImage ( image , angle , method )
@@ -81,4 +113,6 @@ function line = profile ( image , x0 , y0 , x1 , y1 , n , method )
     for i = 1: length ( x )
         line ( i ) = pixelValue ( image , x ( i ) , y ( i ) , method );
     end
+end
+
 end

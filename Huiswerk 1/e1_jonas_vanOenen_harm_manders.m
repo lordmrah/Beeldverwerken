@@ -14,11 +14,11 @@ function e1_jonas_vanOenen_harm_manders()
     
     %% Question 3.1.1
     a = imread('cameraman.tif');
-    rotateImage(a, 30, 'linear')
-    
+    image = rotateImage(a, 30, 'linear');
+    imshow(image);
     
     %% Question 4.1
-    plotParallelogram(0,0,0,0,1,1)
+%     plotParallelogram(0,0,0,0,1,1)
     
     
 % plot a parallelogram overlayed on the current axis
@@ -51,8 +51,10 @@ function r = myAffine ( image , x1 , y1 , x2 , y2 , x3 , y3 , M , N , method )
 end
 
 function rotatedImage = rotateImage ( image , angle , method )
+    angle = degtorad(angle);
+    
     % Create the necessary rotation matrix
-    rotationMatrix = [cos(angle),sin(angle);-sin(angle),cos(angle)];
+    rotationMatrix = [cos(angle),sin(angle);-sin(angle),cos(angle)]
     
     % Obtain indices needed for interpolation
     [imSizeX, imSizeY] = size(image);
@@ -60,12 +62,22 @@ function rotatedImage = rotateImage ( image , angle , method )
     
     RBM = [rotationMatrix, center-rotationMatrix*center;0,0,1];
     
-    newMatrix = zeros(imSizeX, imSizeY);
+    X = repmat([1:imSizeY],1,imSizeX);
+    Y = reshape(repmat([1:imSizeX],imSizeY,1),[1,imSizeX*imSizeY]);
+    Z = repmat(1,1,imSizeY*imSizeX);
+    pixelVectors = [X;Y;Z];
     
+    rotatedPixelVectors = RBM*pixelVectors;
     
-    % Obtain colors for the whole rotatedImage matrix
+    rotatedImage = [];
+%     rotatedPixelVectors(4,1)
     
-    % using the specified interpolation method
+    for i = 1 : length(rotatedPixelVectors)
+        pixelVal = pixelValue(image, rotatedPixelVectors(1,i), rotatedPixelVectors(2,i),method);
+        rotatedImage = [rotatedImage, pixelVal];
+    end
+    
+    rotatedImage = reshape(rotatedImage, imSizeY, imSizeX);
 end
     
 function color = pixelValue( image , x, y, method )

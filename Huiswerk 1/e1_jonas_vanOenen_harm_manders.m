@@ -3,77 +3,68 @@ function e1_jonas_vanOenen_harm_manders()
     % Team: Jonas van Oenen, Harm Manders
     
     %% Question 2.1.1 + 2.1.2 + 2.1.3
-    a = imread ( 'autumn.tif' );
-    a = im2double ( rgb2gray ( a ) );
+%     a = imread ( 'autumn.tif' );
+%     a = im2double ( rgb2gray ( a ) );
     
 %     reset ( gcf ); % this resets the (get) current figure
 %     hold on ; % overlay on current figure
 %     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'linear') , 'b' );
 %     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'nearest') , 'r' );
 %     hold off ;
-    
+   
     %% Question 3.1.1 + 3.1.2 + 3.1.3
-    a = imread('cameraman.tif');
-    a = im2double(a);
-    degrees = 30; % in degrees
-    angle = degtorad(degrees);
-    bordImg = addBorder(a, angle);
-    
-    tic
-    linImg = rotateImage(bordImg, angle, 'linear');
-    disp('linear:')
-    toc
-    imshow(linImg)
-    % Question 3.1.4
-
-    tic
-    nearImg = rotateImage(bordImg, angle, 'nearest');
-    disp('nearest:')
-    toc
-    
-    linImg = rotateImage(linImg, -angle, 'linear');
-    nearImg = rotateImage(nearImg, -angle, 'nearest');
-
-    linDist = calculateDist(linImg, bordImg);
-    nearDist = calculateDist(nearImg, bordImg);
-    
-    disp('linear square error:')
-    disp(linDist)
-    disp('nearest square error:')
-    disp(nearDist)
+     a = imread('cameraman.tif');
+     a = im2double(a);
+     degrees = 0; % in degrees
+     angle = degtorad(degrees);
+     bordImg = addBorder(a, angle);
+%     
+     tic
+     linImg = rotateImage(bordImg, angle, 'linear');
+     disp('linear:')
+     toc
+     imshow(linImg)
+%     % Question 3.1.4
+% 
+     tic
+     nearImg = rotateImage(bordImg, angle, 'nearest');
+     disp('nearest:')
+     toc
+%     
+     linImg = rotateImage(linImg, -angle, 'linear');
+     nearImg = rotateImage(nearImg, -angle, 'nearest');
+ 
+     linDist = calculateDist(linImg, bordImg);
+     nearDist = calculateDist(nearImg, bordImg);
+     
+     disp('linear square error:')
+     disp(linDist)
+     disp('nearest square error:')
+     disp(nearDist)
 
     
     %% Question 4.1
-%     plotParallelogram(0,0,0,0,1,1)
+%     a = imread('cameraman.tif');
+%     a = im2double(a);
+%     l = size(a);
+%      image = myAffine(a,128,-53.019,-53,128,309,128,l(1),l(2),'linear');
+% %     testI = [1,2,3;4,5, 6;7,8,9];
+% %     [m,n] = size(testI);
+% %     image = myAffine(testI,1,1,m+1,1,1,n+1,m,n,'linear');
+%      imshow(image)
+%     
+function newImage = myAffine ( image , x1 , y1 , x2 , y2 , x3 , y3 , M , N , method )
+    A = [ 0 , 0 , 1 ; N , 0, 1 ; 0 , M , 1]';
+    B = [ x1 , y1; x2 , y2 ; x3 , y3 ]';
+    Rotation = B / A;
     
+    X = repmat([1:M],1,N);
+    Y = reshape(repmat([1:N],M,1),[1,N*M]);
+    Z = ones(1,M*N);
+    pixelVectors = [X;Y;Z];
     
-% plot a parallelogram overlayed on the current axis
-% coordinates given are image coordinates
-function plotParallelogram ( x1 , y1 , x2 , y2 , x3 , y3 )
-    hold on ;
-    plot ([ x1 , x2 , x3 , x3 - x2 + x1 , x1 ] , [ y1 , y2 , y3 , y1 - y2 + y3 , y1 ] ,'y' , 'LineWidth' , 2);
-    text ( x1 , y1 , '1' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
-    text ( x2 , y2 , '2' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
-    text ( x3 , y3 , '3' , 'Color' , [0 , 1 , 0] , 'FontSize' , 18);
-end
-
-function r = myAffine ( image , x1 , y1 , x2 , y2 , x3 , y3 , M , N , method )
-    r = zeros (N , M ); % allocate new image of correct size
-    
-    % calculate X ( insert code for this )
-    A = [ x1 , x2 , x3 ; y1 , y2 , y3 ; 1 , 1 , 1];
-    B = [ xx1 , xx2 , xx3 ; yy1 , yy2 , yy3 ];
-    X = B / A ;
-
-    for xa = 1: M
-        for ya = 1: N
-            
-        newVec = X * [xa; ya; 1]; % Position vector times rotation
-        x = newVec(0); % new X coordinate
-        y = newVec(1); % new Y coordinate
-        r ( ya , xa ) = pixelValue ( image , x , y , method ); % Get pixelvalue for new position
-        end
-    end
+    newVec = Rotation * pixelVectors; 
+    newImage = pixelValue ( image , newVec(1,:) , newVec(2,:) , method ); % Get pixelvalue for new position
 end
 
 function rotatedImage = rotateImage ( image , angle , method )

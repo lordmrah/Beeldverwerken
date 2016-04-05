@@ -14,22 +14,34 @@ function e1_jonas_vanOenen_harm_manders()
     
     %% Question 3.1.1 + 3.1.2 + 3.1.3
     a = imread('cameraman.tif');
-    image = rotateImage(a, 45, 'linear');
-    imshow(image);
+    a = im2double(a);
+    degrees = 30; % in degrees
+    angle = degtorad(degrees);
+    bordImg = addBorder(a, angle);
     
-    % Question 3.1.4
-    a = imread('cameraman.tif');
     tic
-    nearImg = rotateImage(a, 30, 'nearest');
-    disp('nearest:')
-    toc
-    tic
-    linImg = rotateImage(a, 30, 'linear');
+    linImg = rotateImage(bordImg, angle, 'linear');
     disp('linear:')
     toc
-    imshow(nearImg);
-    imshow(linImg);
+    imshow(linImg)
+    % Question 3.1.4
+
+    tic
+    nearImg = rotateImage(bordImg, angle, 'nearest');
+    disp('nearest:')
+    toc
     
+    linImg = rotateImage(linImg, -angle, 'linear');
+    nearImg = rotateImage(nearImg, -angle, 'nearest');
+
+    linDist = calculateDist(linImg, bordImg);
+    nearDist = calculateDist(nearImg, bordImg);
+    
+    disp('linear square error:')
+    disp(linDist)
+    disp('nearest square error:')
+    disp(nearDist)
+
     
     %% Question 4.1
 %     plotParallelogram(0,0,0,0,1,1)
@@ -65,8 +77,6 @@ function r = myAffine ( image , x1 , y1 , x2 , y2 , x3 , y3 , M , N , method )
 end
 
 function rotatedImage = rotateImage ( image , angle , method )
-    angle = degtorad(angle);
-    image = addBorder(image, angle);
     
     % Create the necessary rotation matrix
     rotationMatrix = [cos(angle),sin(angle);-sin(angle),cos(angle)];
@@ -79,20 +89,19 @@ function rotatedImage = rotateImage ( image , angle , method )
     
     X = repmat([1:imSizeY],1,imSizeX);
     Y = reshape(repmat([1:imSizeX],imSizeY,1),[1,imSizeX*imSizeY]);
-    Z = repmat(1,1,imSizeY*imSizeX);
+    Z = ones(1,imSizeY*imSizeX);
     pixelVectors = [X;Y;Z];
     
     rotatedPixelVectors = RBM*pixelVectors;
     
-    rotatedImage = [];
-%     rotatedPixelVectors(4,1)
+    %rotatedImage = [];
+    rotatedImage = pixelValue(image, rotatedPixelVectors(1,:), rotatedPixelVectors(2,:),method);
+    %for i = 1 : length(rotatedPixelVectors)
+    %    pixelVal = pixelValue(image, rotatedPixelVectors(1,i), rotatedPixelVectors(2,i),method);
+    %    rotatedImage = [rotatedImage, pixelVal];
+    %end
     
-    for i = 1 : length(rotatedPixelVectors)
-        pixelVal = pixelValue(image, rotatedPixelVectors(1,i), rotatedPixelVectors(2,i),method);
-        rotatedImage = [rotatedImage, pixelVal];
-    end
-    
-    rotatedImage = reshape(rotatedImage, imSizeY, imSizeX);
+    %rotatedImage = reshape(rotatedImage, imSizeY, imSizeX);
 end
 
 function borderedImage = addBorder(image, angle)
@@ -107,7 +116,7 @@ function borderedImage = addBorder(image, angle)
     
     cornerMatrix = [1,1,imSizeX,imSizeX;1,imSizeY,1,imSizeY;1,1,1,1];
     rotCornM = RBM*cornerMatrix;
-    Mcell = mat2cell(rotCornM,repmat(1,3,1),4);
+    Mcell = mat2cell(rotCornM,ones(3,1),4);
     Xmax = max(Mcell{1});
     Xmin = min(Mcell{1});
     Ymax = max(Mcell{2});
@@ -135,37 +144,56 @@ function borderedImage = addBorder(image, angle)
                     verBor, image, verBor;
                     corBor, horBor, corBor];
     
-    
+end
+
+function distance = calculateDist(image, original)
+    diff = (original - image).^2;
+    distance = sum(diff(:));
     
 end
     
-function color = pixelValue( image , x, y, method )
+function color = pixelValue( image , y, x, method )
     % pixel value at real coordinates
-    if inImage ( size ( image ) ,x , y )
-        % do the interpolation
-        switch ( method )
-            case 'nearest'
-                % Do nearest neighbour
-                color = image(floor(x+0.5),floor(y+0.5)); 
-                return ;
-            case 'linear'
-                % Do bilinear interpolation
-                k = floor(x);
-                k1 = k+1;
-                
-                l = floor(y);
-                l1 = l+1;
-                
-                a = x - k;
-                b = y - l;
-                
-                color = (1-a)*(1-b)*image(k,l) + (1-a)*b*image(k,l1) + a*b*image(k1,l1) + a*(1-b)*image(k1,l);
-         end %end switch
-    else
-        % return a constant
-        color = 0;
-        return ;
-    end
+    
+    [maxX,maxY] = size(image);
+    inBoundX = not(abs(sign(sign(1 - x) + sign(maxX - x))));
+    inBoundY = not(abs(sign(sign(1 - y) + sign(maxY - y))));
+    x = ((x-1) .* inBoundX) + 1;
+    y = ((y-1) .* inBoundY) + 1;
+    
+
+    % do the interpolation
+    switch ( method )
+        case 'nearest'
+            % Do nearest neighbour
+            colorVector = impixel(image, floor(x+0.5),floor(y+0.5));
+            grayVector = colorVector(:,1);
+            color = reshape(grayVector, maxX, maxY);
+            return ;
+        case 'linear'
+            % Do bilinear interpolation
+            k = floor(x);
+            k1 = k+1;
+
+            l = floor(y);
+            l1 = l+1;
+
+            a = x - k;
+            b = y - l;
+            
+            
+            temp = impixel(image,k,l);
+            kl = reshape(temp(:,1),1, maxX*maxY);
+            temp = impixel(image,k,l1);
+            kl1 = reshape(temp(:,1),1, maxX*maxY);
+            temp = impixel(image,k1,l1);
+            k1l1 = reshape(temp(:,1),1, maxX*maxY);
+            temp = impixel(image,k1,l);
+            k1l = reshape(temp(:,1),1, maxX*maxY);
+            colorVector = (1-a).*(1-b).*kl + (1-a).*b.*kl1 + a.*b.*k1l1 + a.*(1-b).*k1l;
+            color = reshape(colorVector, maxX, maxY);
+     end %end switch
+
 end
 
 function bool = inImage(sizeImage, x, y)

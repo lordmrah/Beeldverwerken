@@ -6,15 +6,17 @@ function e1_jonas_vanOenen_harm_manders()
       a = imread ( 'autumn.tif' );
       a = im2double ( rgb2gray ( a ) );
     
-      hold on ; % overlay on current figure
+      subplot(2,2,1)
+      hold on;
       plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'linear') , 'b' );
       plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'nearest') , 'r' );
-      hold off ;
+      hold off;
+      title('Question 2')
    
     %% Question 3.1.1 + 3.1.2 + 3.1.3
      a = imread('cameraman.tif');
      a = im2double(a);
-     degrees = 10; % in degrees
+     degrees = 45; % in degrees
      angle = degtorad(degrees);
      bordImg = addBorder(a, angle);
      
@@ -23,7 +25,9 @@ function e1_jonas_vanOenen_harm_manders()
      linImg = rotateImage(bordImg, angle, 'linear');
      disp('linear:')
      toc
+     subplot(2,2,2)
      imshow(linImg)
+     title('Question 3');
      
      tic
      nearImg = rotateImage(bordImg, angle, 'nearest');
@@ -47,9 +51,12 @@ function e1_jonas_vanOenen_harm_manders()
      a = im2double(a);
      l = size(a);
      image = myAffine(a,128,-53.019,-53,128,309,128,l(1),l(2),'linear');
+     subplot(2,2,3)
      imshow(image)
-
+     title('Question 4')
+     
      %% Question 5.1
+     
      
 %% Helper functions for main testing
 function distance = calculateDist(image, original)

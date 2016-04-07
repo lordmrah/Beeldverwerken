@@ -63,11 +63,11 @@ function e1_jonas_vanOenen_harm_manders()
      %% Question 5.1
      a = imread('attachments/flyers.png');
      a = im2double(a);
-     xy = [0,0;0,400;400,400;400,0];
+     [m,n] = size(a);
+     xy = [0,0;0,800;800,800;800,0];
      uv = [350,556;571,188;821,169;594,586];
-     P = createProjectionmatrix(xy, uv)
-     %[m,n] = size(a);
-     projImg = myProjection(a, P, 10,10,'linear');
+     P = createProjectionmatrix(xy, uv);
+     projImg = myProjection(a, P, m,n,'linear');
      subplot(2,2,4);
      imshow(projImg)
      title('Q5');

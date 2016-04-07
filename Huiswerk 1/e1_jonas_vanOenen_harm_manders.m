@@ -3,21 +3,22 @@ function e1_jonas_vanOenen_harm_manders()
     % Team: Jonas van Oenen, Harm Manders
     
     %% Question 2.1.1 + 2.1.2 + 2.1.3
-%     a = imread ( 'autumn.tif' );
-%     a = im2double ( rgb2gray ( a ) );
-    
-%     reset ( gcf ); % this resets the (get) current figure
-%     hold on ; % overlay on current figure
-%     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'linear') , 'b' );
-%     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'nearest') , 'r' );
-%     hold off ;
+     a = imread ( 'autumn.tif' );
+     a = im2double ( rgb2gray ( a ) );
+   
+     reset ( gcf ); % this resets the (get) current figure
+     hold on ; % overlay on current figure
+     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'linear') , 'b' );
+     plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'nearest') , 'r' );
+     hold off ;
    
     %% Question 3.1.1 + 3.1.2 + 3.1.3
-     a = imread('cameraman.tif');
-     a = im2double(a);
-     degrees = 0; % in degrees
+     b = imread('cameraman.tif');
+     b = im2double(b);
+     
+     degrees = 30; % in degrees
      angle = degtorad(degrees);
-     bordImg = addBorder(a, angle);
+     bordImg = addBorder(b, angle);
 %     
      tic
      linImg = rotateImage(bordImg, angle, 'linear');
@@ -159,7 +160,8 @@ function color = pixelValue( image , y, x, method )
             % Do nearest neighbour
             colorVector = impixel(image, floor(x+0.5),floor(y+0.5));
             grayVector = colorVector(:,1);
-            color = reshape(grayVector, maxX, maxY);
+            %color = reshape(grayVector, maxX, maxY);
+            color = grayVector;
             return ;
         case 'linear'
             % Do bilinear interpolation
@@ -182,7 +184,8 @@ function color = pixelValue( image , y, x, method )
             temp = impixel(image,k1,l);
             k1l = reshape(temp(:,1),1, maxX*maxY);
             colorVector = (1-a).*(1-b).*kl + (1-a).*b.*kl1 + a.*b.*k1l1 + a.*(1-b).*k1l;
-            color = reshape(colorVector, maxX, maxY);
+            %color = reshape(colorVector, maxX, maxY);
+            color = colorVector;
      end %end switch
 
 end
@@ -199,10 +202,9 @@ end
 
 function line = profile ( image , x0 , y0 , x1 , y1 , n , method )
     % profile of an image along straight line in n points
-    x = linspace ( x0 , x1 , n ); y = linspace ( y0 , y1 , n );
-    for i = 1: length ( x )
-        line ( i ) = pixelValue ( image , x ( i ) , y ( i ) , method );
-    end
+    x = linspace ( x0 , x1 , n ); 
+    y = linspace ( y0 , y1 , n );
+    line = pixelValue ( image , x , y , method );
 end
 
 end

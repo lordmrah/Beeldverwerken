@@ -6,13 +6,13 @@ function e1_jonas_vanOenen_harm_manders()
       a = imread ( 'autumn.tif' );
       a = im2double ( rgb2gray ( a ) );
     
-      subplot(2,2,1)
+      subplot(2,3,1)
       hold on;
       plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'linear') , 'b' );
       plot ( profile ( a , 100 , 100 , 120 , 120 , 200 , 'nearest') , 'r' );
       hold off;
       title('Question 2')
-   
+
     %% Question 3.1.1 + 3.1.2 + 3.1.3
      a = imread('cameraman.tif');
      a = im2double(a);
@@ -25,7 +25,7 @@ function e1_jonas_vanOenen_harm_manders()
      linImg = rotateImage(bordImg, angle, 'linear');
      disp('linear:')
      toc
-     subplot(2,2,2)
+     subplot(2,3,2)
      imshow(linImg)
      title('Question 3');
      
@@ -55,23 +55,61 @@ function e1_jonas_vanOenen_harm_manders()
      %image = myAffine(a,128,-53.019,-53,128,309,128,l(1),l(2),'linear');
      uv = [-53,128;128,-53;128,309]';
      image = myAffine(a,uv,l(1),l(2),'linear');
-     subplot(2,2,3)
+     subplot(2,3,3)
      imshow(image)
      title('Question 4')
      
      
      %% Question 5.1
-     a = imread('attachments/flyers.png');
-     a = im2double(a);
-     [m,n] = size(a);
-     xy = [0,0;0,800;800,800;800,0];
-     uv = [350,556;571,188;821,169;594,586];
+     img = imread('attachments/flyers.png');
+     img = im2double(rgb2gray(img));
+     %[m,n] = size(img);
+     m = 100;
+     n = 75;
+ 
+     uv = [1,1;n,1;n,m;1,m];
+     xy = [571,188;822,173;593,587;354,556];
      P = createProjectionmatrix(xy, uv);
-     projImg = myProjection(a, P, m,n,'linear');
-     subplot(2,2,4);
+
+     projImg = myProjection(img, P, m,n,'linear');
+     subplot(2,3,4);
      imshow(projImg)
-     title('Q5');
+     title('Question 5');
+        
      
+     img = imread('attachments/flyers.png');
+     img = im2double(rgb2gray(img));
+     m1 = 100;
+     n1 = 100;
+     uv1 = [1,1;n1,1;n1,m1;1,m1];
+     xy1 = [153,584;105,377;304,213;392,395];
+     P1 = createProjectionmatrix(xy1,uv1);
+     projImg1 = myProjection(img, P1, m1, n1,'linear');
+     subplot(2,3,5);
+     imshow(projImg1);
+     title('Question 5')
+     
+     %%Question 7
+     XYZ = [];
+     load('attachments/calibrationpoints.mat');
+     M = estimateProjectionmatrix(xy, XYZ)
+     
+     %%Question 8
+     img = imread('attachments/calibrationpoints.jpg');
+     subplot(2,3,6)
+     imshow(img)
+     Cube = createCube(1,[1,1,1])
+     [f,p,c] = size(Cube);
+     vect = zeros(3,f*p);
+     for i=1:f,
+         count = (i-1)*f+1;
+         for j=1:p,
+            vect(1,j+count) = Cube(i,j,1);
+            vect(2,j+count) = Cube(i,j,2);
+            vect(3,j+count) = Cube(i,j,3);
+         end
+     end
+     vect
 %% Helper functions for main testing
 function distance = calculateDist(image, original)
     diff = (original - image).^2;

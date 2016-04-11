@@ -9,8 +9,9 @@ function projMatrix = createProjectionmatrix(xy , uv)
     AoddRows = [u,v,o,z,z,z,-x.*u,-x.*v,-x];
     AevenRows = [z,z,z,u,v,o,-y.*u,-y.*v,-y];
     
-    A = [AoddRows; AevenRows];
-    %M = [m1;m2;m3;m4;m5;m6;m7;m8;m9];
+    A = [AevenRows;AoddRows];
+    
     projMatrix = null(A);
+    projMatrix = projMatrix*1/projMatrix(9);
     projMatrix = reshape(projMatrix, 3,3)';
 end

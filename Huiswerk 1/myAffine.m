@@ -9,5 +9,5 @@ function newImage = myAffine ( image , B , M , N , method )
     pixelVectors = [X;Y;Z];
     
     newVec = Rotation * pixelVectors; 
-    newImage = pixelValue ( image , newVec(1,:) , newVec(2,:) , method ); % Get pixelvalue for new position
+    newImage = pixelValue ( image , newVec(1,:) , newVec(2,:),M,N, method ); % Get pixelvalue for new position
 end

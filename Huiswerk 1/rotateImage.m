@@ -15,5 +15,5 @@ function rotatedImage = rotateImage ( image , angle , method )
     pixelVectors = [X;Y;Z];
     
     rotatedPixelVectors = RBM*pixelVectors;
-    rotatedImage = pixelValue(image, rotatedPixelVectors(1,:), rotatedPixelVectors(2,:),method);
+    rotatedImage = pixelValue(image, rotatedPixelVectors(1,:), rotatedPixelVectors(2,:),imSizeX, imSizeY,method);
 end

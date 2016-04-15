@@ -14,8 +14,8 @@ function main()
     % Optical blur
     subplot(3,2,3)
     imshow(img)
-    n = 3;
-    G = (1/n^2)*ones(n)
+    n = 7;
+    G = fspecial('gaussian', [7 7], 3)
 %     G = (1/9)*[1,1,1;1,1,1;1,1,1];
     image = filterImage(img, G);
     subplot(3,2,4);
@@ -25,7 +25,7 @@ function main()
     subplot(3,2,5)
     imshow(img)
     n = 10;
-    G = (1/n^2)*ones(n)
+    G = (1/n^2)*ones(n);
 %     G = (1/6)*[1,1,1,1,1,1];
     blurImage = filterImage(img, G);
     image2 = img+(img-blurImage);
@@ -36,7 +36,7 @@ function main()
     imshow(img)
     
     
-    
+ 
     function filteredImage = filterImage(img, G)
         filteredImage = imfilter(img, G, 'conv', 'replicate');
     end

@@ -1,7 +1,6 @@
 function e1_jonas_vanOenen_harm_manders()
     %% Exercise 1
-    % Team: Jonas van Oenen(10670947), Harm Manders(10677186)
-    % Group C
+    % Team: Jonas van Oenen, Harm Manders
     
     %% Question 2
       a = imread ( 'autumn.tif' );
@@ -51,7 +50,9 @@ function e1_jonas_vanOenen_harm_manders()
      a = imread('cameraman.tif');
      a = im2double(a);
      a(1, 1) = 0;
+     a(1,1)
      l = size(a);
+     %image = myAffine(a,128,-53.019,-53,128,309,128,l(1),l(2),'linear');
      uv = [-53,128;128,-53;128,309]';
      image = myAffine(a,uv,l(1),l(2),'linear');
      subplot(2,3,3)
@@ -86,18 +87,17 @@ function e1_jonas_vanOenen_harm_manders()
      imshow(projImg1);
      title('Question 5')
      
-     %% Question 7
+     %%Question 7
      XYZ = [];
      load('attachments/calibrationpoints.mat');
      M = estimateProjectionmatrix(xy, XYZ)
      
-     %% Question 8
+     %%Question 8
      img = imread('attachments/calibrationpoints.jpg');
      subplot(2,3,6)
      imshow(img)
-     Cube = createCube(10,[1,1,1]);
+     Cube = createCube(10,[1,1,1])
      subPlotFaces(Cube);
-     title('Question 6')
      
      
 %% Helper functions for main testing

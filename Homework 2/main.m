@@ -41,4 +41,26 @@ function main()
         filteredImage = imfilter(img, G, 'conv', 'replicate');
     end
 
+    function gaussGrid= Gauss(sigma)
+       [X,Y] = meshgrid(-sigma:sigma, -sigma:sigma);
+       
+       dist = sqrt(X.*X+Y.*Y);
+       gaussGrid = 1/((sqrt(2*pi)*sigma)^2)*exp(-(dist.^2)/(2*sigma^2));
+       factor = sum(sum(gaussGrid));
+       gaussGrid = gaussGrid./factor;
+       return
+    end
+    Gauss(3)
+    mesh(Gauss(3))
+    
+    
+
+
+
+
+
+
+
+
+
 end

@@ -3,7 +3,7 @@ function main()
     img = imread('cameraman.jpg');
     
     % Subplot M and N
-    SPM = 4;
+    SPM = 5;
     SPN = 3;
     
     % Original image
@@ -37,7 +37,9 @@ function main()
    
     % Question 2
     
-    %Q2.1
+    %2.1
+% used 2*sigma due to 2 sigma containing 98% of the belcurve
+% So our kernelsize is size (1+2*sigma)x(1+2*sigma)
     G = Gauss(3);
     image = filterImage(img, G);
     subplot(SPM,SPN,6)
@@ -50,7 +52,6 @@ function main()
 
     function gaussGrid= Gauss(sigma)
        [X,Y] = meshgrid(-2*sigma:2*sigma, -2*sigma:2*sigma);
-%        used 2*sigma due to 2 sigma containing 98% of the belcurve
        dist = sqrt(X.*X+Y.*Y);
        gaussGrid = 1/((sqrt(2*pi)*sigma)^2)*exp(-(dist.^2)/(2*sigma^2));
        factor = sum(sum(gaussGrid));
@@ -58,15 +59,17 @@ function main()
        return
     end
 
-    %Q2.2
-    sum(sum(Gauss(3)))
+    %2.2
+% We'd expect to be 1 as the awnser, in the Gauss() func. we normalised 
+% the kernel to achieve this.
+    kernelSum = sum(sum(Gauss(3)))
     
     %2.3
     subplot(SPM,SPN,7);
     mesh(Gauss(3))
     title('Q2.3 mesh')
     %2.4
-    % pixels
+% The visible scale parameter is pixels
     %2.5
     data = benchmark(1,5,10);
     subplot(SPM,SPN,[8,9]);
@@ -75,8 +78,9 @@ function main()
         img = imread('cameraman.jpg');
         data = zeros((maxS-minS+1)*N,2);
         count = 0;
+%         temp = maxS / 250;
         for sigma=minS:maxS,
-            
+%             sigma = sigma *250;
             for j=1:N,
                 tic;
                 imfilter(img, Gauss(sigma), 'conv','replicate');
@@ -87,7 +91,7 @@ function main()
         end
     end
     %2.6
-    % 
+% The computational complexity of a Gaussian blur is O(n*sigma^2)
     %2.7
     img = imread('cameraman.jpg');
     b1 = imfilter(img, Gauss(6), 'conv','replicate');
@@ -97,7 +101,84 @@ function main()
 
     subplot(SPM,SPN,10)
     imshow(b1)
+    title('sig=6 and sig=8')
     subplot(SPM,SPN,11)
     imshow(b2)
+    title('sig=10')
+    
+    %2.8
+    function gaussGrid = Gauss1(sigma)
+        X = meshgrid(-2*sigma:2*sigma);
+        dist = sqrt(X.*X);
+        gaussGrid = 1/((sqrt(2*pi)*sigma)^2)*exp(-(dist.^2)/(2*sigma^2));
+        row = gaussGrid(1,:);
+        factor = sum(row);
+        gaussGrid = row./factor;
+        return
+    end
+    Gauss1Sum = sum(Gauss1(3))
+    %2.9
+    data = benchmark1D(1,50,50);
+    subplot(SPM,SPN,12);
+    scatter(data(:,1),data(:,2),15,linspace(1,10,length(data(:,1))),'filled')
+    function data = benchmark1D(minS,maxS,N)
+        img = imread('cameraman.jpg');
+        data = zeros((maxS-minS+1)*N,2);
+        count = 0;
+%         temp = maxS / 250;
+        for sigma=minS:maxS,
+            g1 = Gauss1(sigma);
+            for j=1:N,
+                tic;
+                horFilter = imfilter(img, g1, 'conv','replicate');
+                imfilter(horFilter, g1', 'conv','replicate');
+                time = toc;
+                data(count*N+j,:) = [sigma,time];
+            end
+            count = count + 1;
+        end
+    end
+    
+    subplot(SPM,SPN,12)
+    
+    
+    
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

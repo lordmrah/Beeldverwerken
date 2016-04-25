@@ -3,7 +3,7 @@ function main()
     img = imread('cameraman.jpg');
     
     % Subplot M and N
-    SPM = 5;
+    SPM = 6;
     SPN = 3;
     
     % Original image
@@ -118,7 +118,7 @@ function main()
     end
     Gauss1Sum = sum(Gauss1(3))
     %2.9
-    data = benchmark1D(1,50,50);
+    data = benchmark1D(1,10,5);
     subplot(SPM,SPN,12);
     scatter(data(:,1),data(:,2),15,linspace(1,10,length(data(:,1))),'filled')
     function data = benchmark1D(minS,maxS,N)
@@ -140,45 +140,44 @@ function main()
     end
     
     subplot(SPM,SPN,12)
+
+    %% Question 3
+    % 3.1 see LaTeX
+    % 3.2
+    x = -100:100;
+    y = -100:100;
+    [X , Y ] = meshgrid (x , y );
+    A = 1; B = 2; V = 6* pi /201; W = 4* pi /201;
+    Fxy = A * sin ( V * X ) + B * cos ( W * Y );
+    Fx = A * V * cos(V * X);
+    Fy = -B * W * sin(W * Y);
+    
+    subplot(SPM,SPN,13)
+    imshow (Fxy , [] , 'xData' , x , 'yData', y );
+    title('Gradient Fxy')
+    
+    subplot(SPM,SPN,14)
+    imshow (Fx , [] , 'xData' , x , 'yData', y );
+    title('Gradient Fx')
     
     
-    
+    subplot(SPM,SPN,15)
+    imshow (Fy , [] , 'xData' , x , 'yData', y );
+    title('Gradient Fy')
+    % 3.3
+    xx = -100:10:100;
+    yy = -100:10:100;
+    [XX , YY ] = meshgrid (xx , yy );
+    A = 1; B = 2; V = 6* pi /201; W = 4* pi /201;
+    Fxy = A * sin ( V * X ) + B * cos ( W * Y );
+    Fx = A * V * cos(V * XX);
+    Fy = -B * W * sin(W * YY);
+    subplot(SPM,SPN,16)
+    imshow(Fxy, [] , 'xData' , x , 'yData', y );
+    hold on;
+    quiver(xx,yy,Fx,Fy,'r');
+    hold off;
+    title('gradient vector plot')
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

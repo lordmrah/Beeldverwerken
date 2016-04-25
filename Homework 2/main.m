@@ -44,6 +44,20 @@ function main()
     imshow(image);
     title('Q2.1 Gaussian')
 
+    function filteredImage = filterImage(img, G)
+        filteredImage = imfilter(img, G, 'conv', 'replicate');
+    end
+
+    function gaussGrid= Gauss(sigma)
+       [X,Y] = meshgrid(-2*sigma:2*sigma, -2*sigma:2*sigma);
+%        used 2*sigma due to 2 sigma containing 98% of the belcurve
+       dist = sqrt(X.*X+Y.*Y);
+       gaussGrid = 1/((sqrt(2*pi)*sigma)^2)*exp(-(dist.^2)/(2*sigma^2));
+       factor = sum(sum(gaussGrid));
+       gaussGrid = gaussGrid./factor;
+       return
+    end
+
     %Q2.2
     sum(sum(Gauss(3)))
     
@@ -73,36 +87,17 @@ function main()
         end
     end
     %2.6
-    % O(n)
+    % 
     %2.7
     img = imread('cameraman.jpg');
-    b1 = imfilter(img, Gauss(2), 'conv','replicate');
-    b1 = imfilter(b1, Gauss(2), 'conv','replicate');
+    b1 = imfilter(img, Gauss(6), 'conv','replicate');
+    b1 = imfilter(b1, Gauss(8), 'conv','replicate');
     
-    b2 = imfilter(img, Gauss(sqrt(2^2+2^2)), 'conv','replicate');
+    b2 = imfilter(img, Gauss(10), 'conv','replicate');
 
     subplot(SPM,SPN,10)
     imshow(b1)
     subplot(SPM,SPN,11)
     imshow(b2)
-    eq = isequal(b1,b2)
-    subplot(SPM,SPN,12)
-    imshowpair(b1,b2,'diff');
-    
-    %imshow(diff)
-    
-        function filteredImage = filterImage(img, G)
-        filteredImage = imfilter(img, G, 'conv', 'replicate');
-    end
-
-    function gaussGrid= Gauss(sigma)
-       [X,Y] = meshgrid(-sigma:sigma, -sigma:sigma);
-       
-       dist = sqrt(X.*X+Y.*Y);
-       gaussGrid = 1/((sqrt(2*pi)*sigma)^2)*exp(-(dist.^2)/(2*sigma^2));
-       factor = sum(sum(gaussGrid));
-       gaussGrid = gaussGrid./factor;
-       return
-    end
 
 end

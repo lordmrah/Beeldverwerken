@@ -100,4 +100,47 @@ function main()
     subplot(SPM,SPN,11)
     imshow(b2)
 
+    %% Question 3
+    
+    % 3.2
+    subplot(SPM,SPN,14)
+    gradientFxy() 
+    title('Gradient Fxy')
+    
+    subplot(SPM,SPN,15)
+    gradientFx()
+    title('Gradient Fx')
+    
+    
+    subplot(SPM,SPN,16)
+    gradientFy()
+    title('Gradient Fy')
+    
+    function result = gradientFxy()
+        x = -100:100;
+        y = -100:100;
+        [X , Y ] = meshgrid (x , y );
+        A = 1; B = 2; V = 6* pi /201; W = 4* pi /201;
+        F = A * sin ( V * X ) + B * cos ( W * Y );
+        imshow (F , [] , 'xData' , x , 'yData', y );
+    end
+
+    function result = gradientFx()
+        x = -100:100;
+        y = -100:100;
+        [X , Y ] = meshgrid (x , y );
+        A = 1; B = 2; V = 6* pi /201; W = 4* pi /201;
+        F = A * V * cos(V * X);
+        imshow (F , [] , 'xData' , x , 'yData', y );
+    end
+
+    function result = gradientFy()
+        x = -100:100;
+        y = -100:100;
+        [X , Y ] = meshgrid (x , y );
+        A = 1; B = 2; V = 6* pi /201; W = 4* pi /201;
+        F = -B * W * sin(W * Y);
+        imshow (F , [] , 'xData' , x , 'yData', y );
+    end
+
 end

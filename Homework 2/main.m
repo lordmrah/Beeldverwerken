@@ -178,6 +178,17 @@ function main()
     quiver(xx,yy,Fx,Fy,'r');
     hold off;
     title('gradient vector plot')
-
+    % 3.4
+    % 3.5
+    Gxy = rotateImage ( Fxy , degtorad(10) , 'linear' );
+    Gx = rotateImage ( Fx , degtorad(10) , 'linear' );
+    Gy = rotateImage ( Fy , degtorad(10) , 'linear' );
+    subplot(SPM,SPN,17)
+    imshow(Gxy, [] , 'xData' , x , 'yData', y );
+    hold on;
+    quiver(xx,yy,Gx,Gy,'r');
+    hold off;
+    title('rot. grad. vect. plot')
+    
 end
 

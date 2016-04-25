@@ -71,7 +71,8 @@ function main()
     %2.4
 % The visible scale parameter is pixels
     %2.5
-    data = benchmark(1,5,10);
+    data = benchmark(1,20,10);
+    %when you to till 1000 you'll see its O(n r^2)
     subplot(SPM,SPN,[8,9]);
     scatter(data(:,1),data(:,2),15,linspace(1,10,length(data(:,1))),'filled')
     function data = benchmark(minS,maxS,N)
@@ -118,7 +119,7 @@ function main()
     end
     Gauss1Sum = sum(Gauss1(3))
     %2.9
-    data = benchmark1D(1,10,5);
+    data = benchmark1D(1,20,20);
     subplot(SPM,SPN,12);
     scatter(data(:,1),data(:,2),15,linspace(1,10,length(data(:,1))),'filled')
     function data = benchmark1D(minS,maxS,N)

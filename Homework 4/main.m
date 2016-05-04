@@ -20,8 +20,8 @@ function main()
     RhoRange = [-D,D];
     RhoVal = RhoRange / RhoRes;
     ThetaVal = ThetaRange / ThetaRes;
-    accumMatrix = zeros(round(diff(RhoVal)),round(diff(ThetaVal)));
-    
+    accumMatrix = zeros(round(diff(RhoVal)),round(diff(ThetaVal))+1);
+    size(accumMatrix)
 % Find non-zero pixels in binary edge image
     [Y,X] = find(BW);
     for k = 1:length(X),
@@ -32,24 +32,25 @@ function main()
             r = x*sin(rad) - y*cos(rad);
             rI = round((r+RhoRange(2))/RhoRes);
             tI = (theta + 1)/ThetaRes;
-%             theta+1
-%             r+RhoRange(2)
-            accumMatrix(tI,rI) = 1;
+%             val  = accumMatrix(rI,tI);
+            accumMatrix(rI,tI) =  1;
         end
     end
-    imshow(accumMatrix)
+    size(accumMatrix)
+    imshow(accumMatrix,'XData',ThetaRange,'YData',RhoRange,'InitialMagnification','fit')
+    colormap(hot)
     xlabel('\theta'), ylabel('\rho');
-    axis on, axis normal, hold on;
+%     axis on, axis normal, hold on;
     
     subplot(2,2,1);
     imshow(RGB);
     subplot(2,2,2);
     imshow(BW)
     subplot(2,2,[3,4]);
-    imshow(imadjust(mat2gray(accumMatrix)),'XData',T,'YData',R, 'InitialMagnification','fit');
-    xlabel('\theta'), ylabel('\rho');
-    axis on, axis normal, hold on;
-    colormap(hot);
+%     imshow(imadjust(mat2gray(accumMatrix)),'XData',T,'YData',R, 'InitialMagnification','fit');
+%     xlabel('\theta'), ylabel('\rho');
+%     axis on, axis normal, hold on;
+%     colormap(hot);
     
     %%%% THEORY QUESTIONS %%%%%
     % 1.

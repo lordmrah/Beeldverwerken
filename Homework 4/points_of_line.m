@@ -15,7 +15,8 @@ for i = 1:size(points,1)
 points(i,3) = 1;    
 end
 % Normalize the line:
-line = 1/sqrt(line(1)^2 + line(2)^2) .* line;
+lineNorm = sqrt(sum(line.^2))
+line = 1/lineNorm .* line;
 % To create an array we need a counter to eventually add the points that
 % lie within the distance epsilon to an array. 
 counter = 0;

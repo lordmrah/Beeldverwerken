@@ -12,7 +12,7 @@ function h = hough(im, Thresh, nRho, nTheta)
     thetas = [0:dTheta:(pi-dTheta)]
     
     h = zeros(nRho,nTheta);
-    size(h);
+    
     
 % Find non-zero pixels in binary edge image
     [Y,X] = find(BW);

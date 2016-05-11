@@ -19,10 +19,10 @@ function main()
     
 %     size(accumMatrix)
 %     imshow(h,'XData',ThetaRange,'YData',RhoRange,'InitialMagnification','fit')
-    normH = h - min(h(:));
-    normH = normH ./ max(normH(:));
+%     normH = h - min(h(:));
+    h = h;
+    normH = h ./ max(h(:));
     
-%     colormap(hot)
     
 %     axis on, axis normal, hold on;
     

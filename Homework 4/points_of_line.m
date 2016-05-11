@@ -12,13 +12,9 @@ function pts = points_of_line(points, line, epsilon)
 % We want to make all point in homogeneous coordinates. Because we just add
 % one, these points are allready normalized. 
     points(:,3) = 1;
+    
 
-    
-    % Normalize the line:
-    
-    lineNorm = sqrt(line(1)^2+line(2)^2);
-    line = 1/lineNorm .* line;
-%     line = line/line(3);
+    line = line/line(3);
     
 % To create an array we need a counter to eventually add the points that
 % lie within the distance epsilon to an array. 

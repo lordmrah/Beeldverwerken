@@ -11,7 +11,7 @@ function lines = houghlines(im, h, thresh, method)
     %   thresh - The threshold level to use in the Hough Transform
     %   to decide whether an edge is significant
 
-    [rows, columns] = size( im);
+    [rows, columns] = size(im);
     rhomax = sqrt ( rows ^2 + columns ^2);
     nrho = size(h,1);
     ntheta = size(h,2);

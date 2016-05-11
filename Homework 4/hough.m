@@ -24,7 +24,6 @@ function h = hough(im, Thresh, nRho, nTheta)
             rho = x*sin(theta) - y*cos(theta);
             rhoIndex = round(rho/dRho + nRho/2);
             thetaIndex = round(theta/dTheta + 1);
-%             val  = accumMatrix(rI,tI);
             h(rhoIndex,thetaIndex) = h(rhoIndex, thetaIndex) + 1;
         end
     end

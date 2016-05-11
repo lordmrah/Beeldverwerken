@@ -5,7 +5,7 @@ function main()
     shape = imread('attachments/shapes.png');
     szel = imread('attachments/szeliski.png');
 % Choose what image to use
-    RGB = shape;
+    RGB = szel;
     ThreshMin = 0.1;
     ThreshMax = 0.5;
     nTheta = 1000;
@@ -32,24 +32,22 @@ function main()
     xlabel('\theta'), ylabel('\rho');
     subplot(3,2,4);
     imshow(RGB)
-    lines = houghlines(I,h,.3, 'dilation')
-    %%%% THEORY QUESTIONS %%%%%
-    % 1.
-    % 2: When \rho is negative \theta is 180 - the \theta that correlates
-    % with -1*\rho.
-    % The two differences between the two intersections is that the
-    % "direction" of the lines are different.
-    
-    [X,Y] = find(BW);
-    XY = [X, Y];
-    L = size(XY)
+    lines = houghlines(I,h,.25, 'dilation')
+
+    [Y,X] = find(BW);
+    points = [Y, X];
+    L = size(points)
+    subplot(3,2,5);
+    imshow(RGB);
+    hold on;
     for i=1:length(lines)
-        lines(i,:)
-        linePoints = points_of_line(XY,lines(i,:),1);
-        size(linePoints)
+        linePoints = points_of_line(points,lines(i,:),5);
+        lineCoords = line_through_points(linePoints)
+        line(lineCoords(1,:),lineCoords(2,:))
+        
     end
     
-    
+%     aditional Hugh transforms
     
     
 end

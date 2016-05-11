@@ -23,7 +23,7 @@ dtheta = pi/ntheta;
 % To make a binary matrix and finding the isolated regions of an image
 % using the threshold (thresh)
 
-g = zeros(drho,dtheta);
+g = zeros(nrho,ntheta);
 g(h>=thresh) = 1;
 [bwl,nregions] = bwlabel(g);
 

@@ -5,7 +5,7 @@ function main()
     shape = imread('attachments/shapes.png');
     szel = imread('attachments/szeliski.png');
 % Choose what image to use
-    RGB = shape;
+    RGB = szel;
     ThreshMin = 0.1;
     ThreshMax = 0.5;
     nTheta = 1000;
@@ -22,15 +22,17 @@ function main()
     
 %     axis on, axis normal, hold on;
     
-    subplot(2,2,1);
+    subplot(3,2,1);
     imshow(RGB);
-    subplot(2,2,2);
+    subplot(3,2,2);
     imshow(BW)
-    subplot(2,2,[3,4]);
+    subplot(3,2,3);
     imshow(h)
     colormap(hot)
     xlabel('\theta'), ylabel('\rho');
-    
+    subplot(3,2,4);
+    imshow(RGB)
+    houghlines(I,h,.3, 'dilation')
     %%%% THEORY QUESTIONS %%%%%
     % 1.
     % 2: When \rho is negative \theta is 180 - the \theta that correlates

@@ -15,10 +15,10 @@ function houghlines(im, h, thresh)
 rows = size( im, 1 );
 columns = size( im, 2 );
 rhomax = sqrt ( rows ^2 + columns ^2);
-nrho = size(h,1)
-ntheta = size(h,2)
-drho = 2*rhomax/(nrho-1)
-dtheta = pi/ntheta
+nrho = size(h,1);
+ntheta = size(h,2);
+drho = 2*rhomax/(nrho-1);
+dtheta = pi/ntheta;
 
 % To make a binary matrix and finding the isolated regions of an image
 % using the threshold (thresh)

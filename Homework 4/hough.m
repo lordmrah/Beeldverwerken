@@ -9,7 +9,7 @@ function h = hough(im, Thresh, nRho, nTheta)
     dRho = (2*D)/(nRho-1);
     
     dTheta = pi/nTheta;
-    thetas = [0:dTheta:(pi-dTheta)]
+    thetas = [0:dTheta:(pi-dTheta)];
     
     h = zeros(nRho,nTheta);
     
@@ -28,4 +28,5 @@ function h = hough(im, Thresh, nRho, nTheta)
             h(rhoIndex,thetaIndex) = h(rhoIndex, thetaIndex) + 1;
         end
     end
+    h = h ./ max(h(:));
 end

@@ -17,11 +17,7 @@ function main()
     BW = edge(I,'Canny',[ThreshMin,ThreshMax]);
     h = hough(I,[ThreshMin,ThreshMax],nRho,nTheta);
     
-%     size(accumMatrix)
-%     imshow(h,'XData',ThetaRange,'YData',RhoRange,'InitialMagnification','fit')
-%     normH = h - min(h(:));
-    h = h;
-    normH = h ./ max(h(:));
+    
     
     
 %     axis on, axis normal, hold on;
@@ -31,8 +27,8 @@ function main()
     subplot(2,2,2);
     imshow(BW)
     subplot(2,2,[3,4]);
-    imshow(normH)
-%     colormap(hot)
+    imshow(h)
+    colormap(hot)
     xlabel('\theta'), ylabel('\rho');
     
     %%%% THEORY QUESTIONS %%%%%

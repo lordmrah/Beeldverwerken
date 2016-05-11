@@ -1,4 +1,4 @@
-function houghlines(im, h, thresh, method)
+function lines = houghlines(im, h, thresh, method)
     % HOUGHLINES %
     % Function takes an image and its Hough transform, finds the
     % significant lines and draws them over the image
@@ -42,8 +42,8 @@ function houghlines(im, h, thresh, method)
             
             localmaxima = hough_dilated == h & h > thresh;
             [rho_i, theta_i] = find(localmaxima);
-            rho = (rho_i - nrho/2) .* drho
-            theta = (theta_i-1).*dtheta
+            rho = (rho_i - nrho/2) .* drho;
+            theta = (theta_i-1).*dtheta;
             for i = 1:length(theta)
                  [x1, y1, x2, y2] = thetarho2endpoints(theta(i), rho(i), rows, columns);
                  line([x1 x2], [y1 y2])

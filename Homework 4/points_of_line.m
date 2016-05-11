@@ -11,28 +11,30 @@ function pts = points_of_line(points, line, epsilon)
 
 % We want to make all point in homogeneous coordinates. Because we just add
 % one, these points are allready normalized. 
-for i = 1:size(points,1)
-points(i,3) = 1;    
-end
-% Normalize the line:
-lineNorm = sqrt(sum(line.^2))
-line = 1/lineNorm .* line;
+    points(:,3) = 1;
+
+    
+    % Normalize the line:
+    
+    lineNorm = sqrt(line(1)^2+line(2)^2);
+    line = 1/lineNorm .* line;
+%     line = line/line(3);
+    
 % To create an array we need a counter to eventually add the points that
 % lie within the distance epsilon to an array. 
-counter = 0;
+    counter = 0;
 % WHen using normalized homogeneous coordinates, the perpendicular distance
 % from a point to a line is the same as taking the dot product. 
 % So we check is the dot product between the (normalized)point and
 % (normalized) line is smalle than epsilon. If this is the case, we add the
 % point to the array pts. 
-
-for i = 1:size(points,1)
-   
-    if dot(points(i,:),line) <= epsilon
+    pts = [];
+    for i = 1:size(points,1)
+        if abs(dot(points(i,:),line)) <= epsilon
             counter = counter + 1;
             pts(counter,:) = points(i,:);
+        end
+
     end
-   
-end
 
 end

@@ -1,4 +1,12 @@
 function main()
+
+    %%%%%%%%%%%%%% NOTES %%%%%%%%%%%%%%%
+    % Just press Run and enjoy the fun %
+    % Harm Manders and Lucas de Vries  %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
 % Read all images in attachments
     bill = imread('attachments/billboard.png');
     box = imread('attachments/box.png');
@@ -32,22 +40,25 @@ function main()
     xlabel('\theta'), ylabel('\rho');
     subplot(3,2,4);
     imshow(RGB)
-    lines = houghlines(I,h,.25, 'dilation')
+%     Use "dilation" or "normal" for the two methods of finding maxima
+    lines = houghlines(I,h,.25, 'dilation');
+%     lines = houghlines(I,h,.25, 'normal')
 
     [Y,X] = find(BW);
     points = [Y, X];
-    L = size(points)
     subplot(3,2,5);
     imshow(RGB);
     hold on;
     for i=1:length(lines)
         linePoints = points_of_line(points,lines(i,:),5);
-        lineCoords = line_through_points(linePoints)
-        line(lineCoords(1,:),lineCoords(2,:))
+        lineCoords = line_through_points(linePoints);
+        line(lineCoords(1,:),lineCoords(2,:));
         
     end
-    
+    title('Cant find good lines');
+    figure
 %     aditional Hugh transforms
+    showhoughs();
     
     
 end

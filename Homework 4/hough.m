@@ -1,6 +1,7 @@
 function h = hough(im, Thresh, nRho, nTheta)
     BW = edge(im,'canny',Thresh);
-    
+
+% Built in matlab code would be soo easy
 %     [H,T,R] = hough(BW, 'RhoResolution', 0.5, 'ThetaResolution', 0.5);
    
     

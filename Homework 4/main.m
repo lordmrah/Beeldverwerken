@@ -1,4 +1,12 @@
 function main()
+
+    %%%%%%%%%%%%%% NOTES %%%%%%%%%%%%%%%
+    % Just press Run and enjoy the fun %
+    % Harm Manders and Lucas de Vries  %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
 % Read all images in attachments
     bill = imread('attachments/billboard.png');
     box = imread('attachments/box.png');
@@ -32,24 +40,24 @@ function main()
     xlabel('\theta'), ylabel('\rho');
     subplot(3,2,4);
     imshow(RGB)
-    lines = houghlines(I,h,.3, 'dilation')
-    %%%% THEORY QUESTIONS %%%%%
-    % 1.
-    % 2: When \rho is negative \theta is 180 - the \theta that correlates
-    % with -1*\rho.
-    % The two differences between the two intersections is that the
-    % "direction" of the lines are different.
-    
-    [X,Y] = find(BW);
-    XY = [X, Y];
-    L = size(XY)
+%     Use "dilation" or "normal" for the two methods of finding maxima
+    lines = houghlines(I,h,.25, 'dilation');
+%     lines = houghlines(I,h,.25, 'normal')
+
+    [Y,X] = find(BW);
+    points = [Y, X];
+    subplot(3,2,5);
+    imshow(RGB);
+    hold on;
     for i=1:length(lines)
-        lines(i,:)
-        linePoints = points_of_line(XY,lines(i,:),10);
-        size(linePoints)
+        linePoints = points_of_line(points,lines(i,:),5);
+        lineCoords = line_through_points(linePoints);
+        line(lineCoords(1,:),lineCoords(2,:));
     end
-    
-    
+    title('Cant find good lines');
+    figure
+%     aditional Hugh transforms
+    showhoughs();
     
     
 end

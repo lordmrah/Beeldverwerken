@@ -1,6 +1,7 @@
 function h = hough(im, Thresh, nRho, nTheta)
     BW = edge(im,'canny',Thresh);
-    
+
+% Built in matlab code would be soo easy
 %     [H,T,R] = hough(BW, 'RhoResolution', 0.5, 'ThetaResolution', 0.5);
    
     
@@ -24,7 +25,6 @@ function h = hough(im, Thresh, nRho, nTheta)
             rho = x*sin(theta) - y*cos(theta);
             rhoIndex = round(rho/dRho + nRho/2);
             thetaIndex = round(theta/dTheta + 1);
-%             val  = accumMatrix(rI,tI);
             h(rhoIndex,thetaIndex) = h(rhoIndex, thetaIndex) + 1;
         end
     end

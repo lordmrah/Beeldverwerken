@@ -11,7 +11,7 @@ function lines = houghlines(im, h, thresh, method)
     %   thresh - The threshold level to use in the Hough Transform
     %   to decide whether an edge is significant
 
-    [rows, columns] = size( im);
+    [rows, columns] = size(im);
     rhomax = sqrt ( rows ^2 + columns ^2);
     nrho = size(h,1);
     ntheta = size(h,2);
@@ -28,7 +28,7 @@ function lines = houghlines(im, h, thresh, method)
                  mask = bwl == n;
                  region = mask .* h;
                  [maxvalue1, rownr] = max(region);
-                 [maxvalue2, theta_i] = max(maxvalue1);
+                 [~, theta_i] = max(maxvalue1);
                  rho_i = rownr(theta_i);
                  theta = (theta_i-1)*dtheta;
                  rho = (rho_i - nrho/2) * drho;
@@ -46,7 +46,7 @@ function lines = houghlines(im, h, thresh, method)
             theta = (theta_i-1).*dtheta;
             for i = 1:length(theta)
                  [x1, y1, x2, y2] = thetarho2endpoints(theta(i), rho(i), rows, columns);
-                 line([x1 x2], [y1 y2])
+                 line([x1 x2], [y1 y2]);
                  lines(i,:) = cross([x1 ; y1 ; 1],[x2 ; y2 ; 1])';
             end
     end

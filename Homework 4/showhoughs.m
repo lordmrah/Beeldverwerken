@@ -1,32 +1,42 @@
 function showhoughs()
-szel = imread('attachments/szeliski.png');
-szel = im2double(rgb2gray(szel));
 
-box = imread('attachments/box.png');
-box = im2double(rgb2gray(box));
+    boxC = imread('attachments/box.png');
+    box = im2double(rgb2gray(boxC));
 
-bill = imread('attachments/billboard.png');
-bill = im2double(rgb2gray(bill));
+    billC = imread('attachments/billboard.png');
+    bill = im2double(rgb2gray(billC));
+    
+    shapeC = imread('attachments/shapes.png');
+    shape = im2double(rgb2gray(shapeC));
 
-subplot(2,3,1);
-imshow(szel)
-title('Szeliski')
-subplot(2,3,4);
-imshow(hough(szel, 0.5, 700, 700))
-title('Szeliski Hough transform')
+    subplot(2,3,1);
+    imshow(shapeC)
+    title('Shapes')
+    h = hough(shape, 0.5, 700, 700);
+    houghlines(shape,h,.2, 'dilation');
+    subplot(2,3,4);    
+    imshow(h)
+    colormap(hot);
+    title('Shapes Hough transform')
 
-subplot(2,3,2);
-imshow(box)
-title('Box')
-subplot(2,3,5);
-imshow(hough(box, 0.5, 700, 700))
-title('Box Hough transform')
+    subplot(2,3,2);
+    imshow(boxC)
+    title('Box')
+    h = hough(box, 0.5, 700, 700);
+    houghlines(box,h,.4, 'dilation');
+    subplot(2,3,5);
+    imshow(h)
+    colormap(hot);
+    title('Box Hough transform')
 
-subplot(2,3,3);
-imshow(bill)
-title('Billboard')
-subplot(2,3,6);
-imshow(hough(bill, 0.5, 700, 700))
-title('Billboard Hough transform')
+    subplot(2,3,3);
+    imshow(billC)
+    title('Billboard')
+    h = hough(bill, 0.5, 700, 700);
+    houghlines(bill,h,.45, 'dilation');
+    subplot(2,3,6);
+    imshow(h)
+    colormap(hot);
+    title('Billboard Hough transform');
 end
 

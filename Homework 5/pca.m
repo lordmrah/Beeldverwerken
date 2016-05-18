@@ -1,7 +1,8 @@
 function [V, D, eigenvalues] = pca (X,trainset, d, mean_over_data)
-covariance = 1/(size(trainset,2))*X*X';
-[V,D] = eigs( X*X', d );
-E = X'*V*inv(D);
+size(X)
+covariance = 1/(size(trainset,2))*(X*X');
+[V,D] = eigs(covariance,d);
+E = X'*V/D;
 for i = 1:size(E,2)
     E(:,i) = E(:,i)./norm( E(:,i) );
 end
@@ -12,7 +13,9 @@ for i = 1:d
 end
 figure
 plot(eigenvalues)
-eigenvalues
+% eigenvalues
+% size(E)
+% size(V)
 
 % Plot first 9 eigenvectors as images
 if d == 9
@@ -23,7 +26,7 @@ if d == 9
         imshow( reshape( E(:,i), 112, [] ), [] )
     end
 end
-
+%  
 
 % % -------------------------------------------------
 % 

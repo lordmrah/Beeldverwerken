@@ -5,7 +5,7 @@ function main()
     shape = imread('attachments/shapes.png');
     szel = imread('attachments/szeliski.png');
 % Choose what image to use
-    RGB = shape;
+    RGB = szel;
     ThreshMin = 0.1;
     ThreshMax = 0.5;
     nTheta = 1000;
@@ -45,7 +45,7 @@ function main()
     L = size(XY)
     for i=1:length(lines)
         lines(i,:)
-        linePoints = points_of_line(XY,lines(i,:),1);
+        linePoints = points_of_line(XY,lines(i,:),10);
         size(linePoints)
     end
     
